@@ -163,6 +163,7 @@ class TestTaskConfig(BaseModel):
     mock: MockActionConfig | MockActionCustomConfig | None = None
 
     assert_inputs: list[TestCaseAssert] = []
+    validate_inputs: bool | None = None
     assert_outputs: list[TestCaseAssert] = []
 
     should_be_skipped: bool | None = None

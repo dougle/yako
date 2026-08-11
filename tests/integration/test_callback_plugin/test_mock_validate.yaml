@@ -1,0 +1,18 @@
+YAKO_INTERNAL_INTEGRATION_TEST_CONFIG:
+  search_keyword: "Unsupported parameters for (apt) module"
+  is_passed: false
+
+YAKO_TEST_CASE_CONFIG:
+  name: "test_mock_validate"
+  path: "fake"
+  given:
+    state:
+      - task: Install a package
+        validate_inputs: true
+        should_fail: true
+        mock: {}
+
+  tasks:
+    - name: Install a package
+      apt:
+        namep: nginx

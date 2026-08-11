@@ -513,6 +513,10 @@ class CallbackModule(CallbackBase):  # type: ignore[misc]
             if task_config.assert_inputs:
                 _assert_inputs(task, self._yako)
 
+            # run the original module in check mode
+            if task_config.validate_inputs:
+                task._validate_attributes(task.args)
+
             # Mock the task
             if task_config.mock:
                 _mock_task(task, task_config)
