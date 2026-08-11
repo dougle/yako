@@ -28,16 +28,18 @@ class MockActionConfig(BaseModel):
 
     result_dict: dict[str, Any] = {}
     changed: bool = False
+    check_mode: bool = False
 
     def gen_action(
         self, original_action_name: str | None = None
     ) -> tuple[str, dict[str, Any]]:
         new_action_name = "yako_mock"
         new_action_name_args = {
-            "task_name": new_action_name,
-            "original_module_name": original_action_name,
-            "consider_changed": self.changed,
-            "result_dict": self.result_dict,
+            "_mock_task_name": new_action_name,
+            "_mock_original_module_name": original_action_name,
+            "_mock_consider_changed": self.changed,
+            "_mock_result_dict": self.result_dict,
+            "_mock_check_mode": self.check_mode,
         }
         return new_action_name, new_action_name_args
 
