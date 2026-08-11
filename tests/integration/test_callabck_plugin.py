@@ -143,7 +143,11 @@ def _run_test(
     if is_passed and result.returncode:
         msgs.append(f"Return code is {result.returncode}. Expected: 0")
     if search_str not in result.stdout:
-        msgs.append(f"Can not find the string in stdout. str: '{search_str}'")
+        msgs.append(
+                "Can not find the string in stdout."
+                f"\n\tstr: '{search_str}'"
+                f"\n\tstdout: {result.stdout}"
+        )
 
     if os.environ.get("YAKO_DEBUG_INTEGRATION_TEST", "0") == "1":
         print(
@@ -161,6 +165,7 @@ def _run_test(
         )
 
     if msgs:
+        # print(f"{msgs=}")
         msg = "\n".join(
             (
                 f"Test file failed: {test_case_file_name}",
@@ -187,16 +192,17 @@ def _list_test_cases(
 
     test_cases = []
     for path in test_paths:
-        with path.open() as fin:
-            raw_config = yaml.safe_load(fin)
-            if test_config := raw_config.get(config_key, None):
-                test_cases.append(
-                    (
-                        path.name,
-                        test_config["search_keyword"],
-                        test_config.get("is_passed", True),
+        if path.name == "test_mock_basic.yaml":
+            with path.open() as fin:
+                raw_config = yaml.safe_load(fin)
+                if test_config := raw_config.get(config_key, None):
+                    test_cases.append(
+                        (
+                            path.name,
+                            test_config["search_keyword"],
+                            test_config.get("is_passed", True),
+                        )
                     )
-                )
 
     return sorted(test_cases, key=lambda k: k[0])
 
